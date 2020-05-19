@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 def main():
     DouBanTOP250url = 'https://movie.douban.com/top250?start='
     movielist = getData(DouBanTOP250url)
-    savepath = r'C:\Users\PC\Desktop\电影top250.xls'
+    savepath = '电影top250.xls'
     saveData(movielist,savepath)
 
 
