@@ -1,0 +1,46 @@
+import requests
+import json
+from bs4 import BeautifulSoup
+import csv
+import re
+
+#数据来源：中国房价行情
+
+url = 'https://www.creprice.cn/rank/cityforsale.html'
+
+
+def askURL(url):
+    ua = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'}
+    response = requests.post(url,headers=ua)
+    html = response.content.decode('utf-8')
+    return html
+
+def request_page(url):
+    html = askURL(url)
+    soup = BeautifulSoup(html,"html.parser")
+    datas = soup.find_all("th")  #数据在"th"中
+    house_price_list = []
+    for data in datas:
+        price = data.text.strip()
+        price = price.replace(",","")  #去除房价数字中的逗号
+        if len(house_price_list) < 5:
+            house_price_list.append(price)
+        else:
+            with open('2020年4月房价.csv','a') as f:
+                f.write(",".join(house_price_list) + "\n")
+                print(",".join(house_price_list))
+                house_price_list = []
+                house_price_list.append(price)
+
+if __name__ == '__main__':
+    request_page(url)
+
+
+
+
+
+
+
+
+
+
